@@ -95,6 +95,8 @@ The return value looks like the one shown below:
 
     my $result = $code->( @$args );
 
+In case of any error in the executed code reference tha standard C<$@> variable will be set.
+
 =over
 
 =item code

@@ -41,6 +41,9 @@
         my $result = $code->( @$args );
 ```
 
+    In case of any error in the executed code reference tha standard $@
+    variable will be set.
+
 ###### code
 
           it's a code reference to be executed in safe context
