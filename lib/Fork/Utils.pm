@@ -90,12 +90,12 @@ Any signal (except KILL, STOP) can be blocked.
 The signal names can be taken from C<$Config{'sig_names'}>.
 
 Returns a result of mentioned code reference as "$code->( @$args )".
-Be aware that in current implementation this methods can't return the list.
+Be aware that in current implementation this method can't return the list.
 The return value looks like the one shown below:
 
     my $result = $code->( @$args );
 
-In case of any error in the executed code reference tha standard C<$@> variable will be set.
+In case of any error in the executed code reference the standard C<$@> variable will be set.
 
 =over
 

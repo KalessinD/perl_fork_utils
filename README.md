@@ -34,14 +34,14 @@
     The signal names can be taken from $Config{'sig_names'}.
 
     Returns a result of mentioned code reference as "$code->( @$args )".
-    Be aware that in current implementation this methods can't return the list.
+    Be aware that in current implementation this method can't return the list.
     The return value looks like the one shown below:
 
 ```perl
         my $result = $code->( @$args );
 ```
 
-    In case of any error in the executed code reference tha standard $@
+    In case of any error in the executed code reference the standard $@
     variable will be set.
 
 ###### code
