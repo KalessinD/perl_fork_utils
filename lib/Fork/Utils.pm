@@ -99,7 +99,7 @@ The return value looks like the one shown below:
 
 =item code
 
-  it's a code reference to executed in safe context
+  it's a code reference to be executed in safe context
 
 =item args
 

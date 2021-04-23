@@ -43,7 +43,7 @@
 
 ###### code
 
-          it's a code reference to executed in safe context
+          it's a code reference to be executed in safe context
 
 ###### args
 

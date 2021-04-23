@@ -34,7 +34,7 @@ DESCRIPTION
         my $result = $code->( @$args );
 
     code
-          it's a code reference to executed in safe context
+          it's a code reference to be executed in safe context
 
     args
           it's an array reference of arguments required to be passed into C<code> (see above)
