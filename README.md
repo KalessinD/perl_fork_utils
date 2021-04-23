@@ -33,7 +33,7 @@
 
     The signal names can be taken from $Config{'sig_names'}.
 
-    Returns a result of mentioned code reference as "$code->( @$args )". Be
+    Returns a result of mentioned code reference as "$code->( @$args )".
     Be aware that in current implementation this methods can't return the list.
     The return value looks like the one shown below:
 
