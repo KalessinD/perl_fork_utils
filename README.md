@@ -31,6 +31,14 @@
 
     Any signal (except KILL, STOP) can be blocked.
 
+    Returns a result of mentioned code reference as C<$code->( @$args )>.
+    Be aware that in current implementation this methods can't return the list.
+    The return value looks like the one shown below:
+
+```perl
+        my $result = $code->( @$args );
+```
+
 ###### code
 
           it's a code reference to executed in safe context
