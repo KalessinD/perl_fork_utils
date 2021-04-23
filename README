@@ -23,6 +23,8 @@ DESCRIPTION
     execution. Once code is executed the original signal mask will be
     restored.
 
+    Any signal (except KILL, STOP) can be blocked.
+
     code
           it's a code reference to executed in safe context
 
