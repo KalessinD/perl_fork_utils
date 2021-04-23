@@ -1,104 +1,54 @@
-# perl_crypt_xxhash
+# perl_fork_utils
 
 ### NAME
 
-Crypt::xxHash - xxHash implementation for Perl
+    Fork::Utils - set of usefull methods to work with processes and signals
 
 ### SYNOPSIS
-
 ```perl
-    use Crypt::xxHash qw/
-            xxhash32 xxhash32_hex
-            xxhash64 xxhash64_hex
-            xxhash3_64bits xxhash3_64bits_hex
-            xxhash3_128bits_hex /;
+        use Fork::Utils qw/ safe_exec /;
 
-    my $hash = xxhash32( $data, $seed );
-    my $hex  = xxhash32_hex( $data, $seed );
-
-    my $hash_64 = xxhash64( $data, $seed );
-    my $hex_64  = xxhash64_hex( $data, $seed );
-
-    my $hash_64 = xxhash3_64bits( $data, $seed );
-    my $hex_64  = xxhash3_64bits_hex( $data, $seed );
-
-    my $hex_128 = xxhash3_128bits_hex( $data, $seed );
+        my $result = safe_exec(
+          'code'   => sub { my_super_sub( @_ ); },
+          'args'   => [ @params ],
+          'sigset' => [ qw/ CHLD TERM INT QUIT ALRM / ]
+        );
 ```
 
 ### DESCRIPTION
 
-xxHash is a super fast algorithm that claims to work at speeds close to RAM limits.
-This package provides 32- and 64-bit hash functions.
-As bonus it provides 128-bit hex method.
+    This package provides some methods that can be helpfull while working
+    with sub-processes and signals.
 
-This package was inspired by "Digest::xxHash", but it includes the fresh C code and has
-some optimisations. Thus all hex methods are implemented in Perl XS.
-Also this module doesn't use "Math::Int64" in favor of native 64 bit digits.
+##### safe_exec
+    Gets a hash with arguments, one of them is code reference is required to
+    be executed in safe context. "Safe context" means context which can't be
+    accidently interrupted by some signals.
 
-##### $h = xxhash32( $data, $seed )
+    This method receives list of signals required to be blocked while code
+    execution. Once code is executed the original signal mask will be
+    restored.
 
-Returns a 32 bit hash.
+    Any signal (except KILL, STOP) can be blocked.
 
-##### $h = xxhash32_hex( $data, $seed )
+###### code
 
-Returns a 32 bit hash converted into hex string.
+          it's a code reference to executed in safe context
 
-##### $h = xxhash64( $data, $seed )
+###### args
 
-Returns a 64 bit hash.
+          it's an array reference of arguments required to be passed into C<code> (see above)
 
-=head2 $h = xxhash64_hex( $data, $seed )
+###### sigset
 
-Returns a 64 bit hash converted into hex string
+          it's an array reference of signal names to be blocked while executing the C<code> (see above)
 
-##### $h = xxhash3_64bits( $data, $seed )
+###### replace_mask
 
-Returns a 64 bit hash which calculated by using xxHash3 algorithm.
-
-##### $h = xxhash3_64bits_hex( $data, $seed )
-
-Returns a 64 bit hash which calculated by using xxHash3 algorithm.
-This hash is converted into hex string.
-
-##### $h = xxhash3_128its_hex( $data, $seed )
-
-Returns a 128 bit hash which calculated by using xxHash3 algorithm.
-This hash is converted into hex string.
-
-### SPEED
-
-There are some official benchmark results can be found on the project
-web-site L<https://github.com/Cyan4973/xxHash>
-
-### Benchmarks
-
-Below you can find some benchmarks in comparison with C<Digest::xxHash>.
-
-The "xxhash32" methods in those two packages have the same realisation.
-so they have the same throughput capacity.
-
-But other methods have some differences:
-
-```
-                                  Rate Digest::xxHash::xxhash32_hex Crypt::xxHash::xxhash32_hex
-Digest::xxHash::xxhash32_hex 2577320/s                           --                        -54%
-Crypt::xxHash::xxhash32_hex  5543237/s                         115%                          --
-
-                               Rate Digest::xxHash::xxhash64 Crypt::xxHash::xxhash64
-Digest::xxHash::xxhash64   201729/s                       --                    -99%
-Crypt::xxHash::xxhash64  14893617/s                    7283%                      --
-
-                                  Rate Digest::xxHash::xxhash64_hex Crypt::xxHash::xxhash64_hex
-Digest::xxHash::xxhash64_hex  185048/s                           --                        -96%
-Crypt::xxHash::xxhash64_hex  4926108/s                        2562%                          --
-```
-
-### LICENSE
-
-xxHash is covered by the BSD license.
+          It's a flag, by default it's turned off.
+  
+          If it's off than passed signals will be added to the current signal mask,
+          otherwise mask will be replaced with new one built with mentioned signals
 
 ### AUTHOR
-
-Chernenko Dmitiry cdn@cpan.org
-
-xxHash by Yann Collet.
+    Chernenko Dmitiry cdn@cpan.org
