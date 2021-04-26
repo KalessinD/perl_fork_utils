@@ -5,50 +5,67 @@
     Fork::Utils - set of usefull methods to work with processes and signals
 
 ### SYNOPSIS
-```perl
-        use Fork::Utils qw/ safe_exec /;
-
-        my $result = safe_exec(
-          'code'   => sub { my_super_sub( @_ ); },
-          'args'   => [ @params ],
-          'sigset' => [ qw/ CHLD TERM INT QUIT ALRM / ]
-        );
-```
-
-    The example below shows how to get information about pending signals.
 
 ```perl
         use Fork::Utils qw/ safe_exec /;
         use POSIX ();
 
-        alarm(1);
-        safe_exec(
-            code => sub {
+    my $sig_action = sub { printf("SIG%s was received\n", $_[0]); };
 
-                my $pending_sigset = new POSIX::SigSet ();
-                my $pending_signame = undef;
+    $SIG{TERM} = $SIG{INT} = $SIG{QUIT} = $SIG{ALRM} = $sig_action;
 
-                sleep(2);
+    alarm(1);
 
-                if ( POSIX::sigpending( $pending_sigset ) == -1 ) {
-                  die("sigpending error has occurred");
-                }
+    my $result = safe_exec(
+        args => [ @params ],
+        code => sub {
 
-                if ( $pending_sigset->ismember( POSIX::SIGTERM ) ) {
-                    $pending_signame = 'SIGTERM';
-                } elsif ( $pending_sigset->ismember( POSIX::SIGINT ) ) {
-                    $pending_signame = 'SIGINT';
-                } elsif ( $pending_sigset->ismember( POSIX::SIGQUIT ) ) {
-                    $pending_signame = 'SIGQUIT';
-                } elsif ( $pending_sigset->ismember( POSIX::SIGALRM ) ) {
-                    $pending_signame = 'SIGALRM';
-                }
+            my @args = @_;
 
-                printf("%s is pending\n", $pending_signame);
-            },
-            sigset => [qw/ ALRM TERM INT QUIT /]
-        );
-        alarm(0);
+            my $pending_sigset = new POSIX::SigSet ();
+
+            sleep(2);
+
+            if ( POSIX::sigpending( $pending_sigset ) == -1 ) {
+              die("sigpending error has occurred");
+            }
+
+            if ( $pending_sigset->ismember( POSIX::SIGTERM ) ) {
+                printf("%s is pending\n", 'SIGTERM');
+            }
+
+            if ( $pending_sigset->ismember( POSIX::SIGINT ) ) {
+                printf("%s is pending\n", 'SIGINT');
+            }
+
+            if ( $pending_sigset->ismember( POSIX::SIGQUIT ) ) {
+                printf("%s is pending\n", 'SIGQUIT');
+            }
+
+            if ( $pending_sigset->ismember( POSIX::SIGALRM ) ) {
+                printf("%s is pending\n", 'SIGALRM');
+            }
+        },
+        sigset => [qw/ ALRM TERM INT QUIT /]
+    );
+
+    if (my $error = $@) {
+        STDERR->print("Error: $error\n");
+    }
+
+    alarm(0);
+
+    printf("Good bye\n")
+```
+
+    The possible output of program is shown below (just press Ctrl+c during the execution to get this certain output):
+
+```text
+    SIGINT is pending
+    SIGALRM is pending
+    SIGINT was received
+    SIGALRM was received
+    Good bye
 ```
 
 ### DESCRIPTION
