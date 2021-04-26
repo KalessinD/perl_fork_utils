@@ -10,6 +10,40 @@ SYNOPSIS
           'sigset' => [ qw/ CHLD TERM INT QUIT ALRM / ]
         );
 
+        # example below shows how to get information about pending signals
+
+        use Fork::Utils qw/ safe_exec /;
+        use POSIX ();
+
+        alarm(1);
+        safe_exec(
+            code => sub {
+
+                my $pending_sigset = new POSIX::SigSet ();
+                my $pending_signame = undef;
+
+                sleep(2);
+
+                if ( POSIX::sigpending( $pending_sigset ) == -1 ) {
+                  die("sigpending error has occurred");
+                }
+
+                if ( $pending_sigset->ismember( POSIX::SIGTERM ) ) {
+                    $pending_signame = 'SIGTERM';
+                } elsif ( $pending_sigset->ismember( POSIX::SIGINT ) ) {
+                    $pending_signame = 'SIGINT';
+                } elsif ( $pending_sigset->ismember( POSIX::SIGQUIT ) ) {
+                    $pending_signame = 'SIGQUIT';
+                } else {
+                    $pending_signame = 'SIGALRM';
+                }
+
+                printf("%s is pending\n", $pending_signame);
+            },
+            sigset => [qw/ ALRM TERM INT QUIT /]
+        );
+        alarm(0);
+
 DESCRIPTION
     This package provides some methods that can be helpfull while working
     with sub-processes and signals.
