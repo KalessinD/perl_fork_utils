@@ -7,7 +7,7 @@ use Config ();
 use POSIX ();
 use Carp qw/ croak /;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 our @EXPORT_OK = qw/ safe_exec /;
 
 sub safe_exec  {
@@ -97,7 +97,7 @@ Fork::Utils - set of usefull methods to work with processes and signals
                 $pending_signame = 'SIGINT';
             } elsif ( $pending_sigset->ismember( POSIX::SIGQUIT ) ) {
                 $pending_signame = 'SIGQUIT';
-            } else {
+            } elsif ( $pending_sigset->ismember( POSIX::SIGALRM ) ) {
                 $pending_signame = 'SIGALRM';
             }
 

@@ -40,7 +40,7 @@
                     $pending_signame = 'SIGINT';
                 } elsif ( $pending_sigset->ismember( POSIX::SIGQUIT ) ) {
                     $pending_signame = 'SIGQUIT';
-                } else {
+                } elsif ( $pending_sigset->ismember( POSIX::SIGALRM ) ) {
                     $pending_signame = 'SIGALRM';
                 }
 
