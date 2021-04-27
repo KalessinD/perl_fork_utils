@@ -81,7 +81,6 @@ Fork::Utils - set of usefull methods to work with processes and signals
             my @args = @_;
 
             my $pending_sigset = new POSIX::SigSet ();
-            my $pending_signame = undef;
 
             sleep(2);
 
