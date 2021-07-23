@@ -40,8 +40,6 @@ SYNOPSIS
                 if ( $pending_sigset->ismember( POSIX::SIGALRM ) ) {
                     printf("%s is pending\n", 'SIGALRM');
                 }
-
-                printf("%s is pending\n", $pending_signame);
             },
             sigset => [qw/ ALRM TERM INT QUIT /]
         );
