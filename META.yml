@@ -23,4 +23,4 @@ resources:
   repository: https://github.com/KalessinD/perl_fork_utils
 version: '0.06'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'
-min_perl_version: 5.012001
+

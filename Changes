@@ -1,6 +1,9 @@
 Changes
 =======
 
+0.07  2021 Aug 03
+    - fixes in META files
+
 0.06  2021 Aug 02
     - minor POD chqnges
     - move MYMETA.* files into META.* files
