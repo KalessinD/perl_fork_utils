@@ -61,7 +61,7 @@ __END__
 
 =head1 NAME
 
-Fork::Utils - set of usefull methods to work with processes and signals on Linux platform
+Fork::Utils - a set of useful methods to work with processes and signals on Linux
 
 =head1 SYNOPSIS
 
@@ -125,22 +125,25 @@ The possible output of program is shown below (just press Ctrl+c during the exec
 
 =head1 DESCRIPTION
 
-This package provides some methods that can be helpfull while working with sub-processes and signals.
+This package provides some methods that can be helpful while working with child-processes and signals.
 
 =head2 safe_exec
 
-Gets a hash with arguments, one of them is code reference is required to be executed in safe context.
-"Safe context" means context which can't be accidently interrupted by some signals.
+Accepts a hash with arguments, one of them is a code reference which ought to
+be executed in safe context.  "Safe context" means a context which can't be
+accidentally interrupted by some signals.
 
-This method receives list of signals required to be blocked while code execution.
-Once code is executed the original signal mask will be restored.
+This method receives a list of signals required to be blocked while code
+execution. Once the code is executed the original signal mask will be restored.
 
-Any signal (except KILL, STOP) can be blocked.
+Any signal (except KILL and STOP) can be blocked.
 
 The signal names can be taken from C<$Config{'sig_names'}>.
 
-Returns a result of mentioned code reference as "$code->( @$args )".
-Be aware that in current implementation this method can't return the list.
+It returns as a result, a code reference which can be called as
+C<< $code->( @$args ) >>.
+
+Be aware that in the current implementation this method can't return the list.
 The return value looks like the one shown below:
 
     my $result = $code->( @$args );
@@ -151,22 +154,23 @@ In case of any error in the executed code reference the standard C<$@> variable 
 
 =item code
 
-  it's a code reference to be executed in safe context
+A code reference to be executed in a safe context.
 
 =item args
 
-  it's an array reference of arguments required to be passed into C<code> (see above)
+An array reference of arguments required to be passed into C<code> (see above).
 
 =item sigset
 
-  it's an array reference of signal names to be blocked while executing the C<code> (see above)
+An array reference of signal names to be blocked while executing the C<code> (see above)
 
 =item replace_mask
 
-  It's a flag, by default it's turned off.
-  
-  If it's off than passed signals will be added to the current signal mask,
-  otherwise mask will be replaced with new one built with mentioned signals
+A flag, turned off by default.
+
+If it's off then passed signals will be added to the current signal mask,
+otherwise the mask will be replaced with a new one built with the specified
+signals.
 
 =back
 
